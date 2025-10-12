@@ -25,7 +25,7 @@ const CreateTask = () => {
   const [date, setDate] = useState<Date | null>(null);
   const [formdata, setFormdata] = useState<Formdata | null>(null);
   const router = useRouter();
-  
+  console.log(formdata);
   const handleDateChange = (newDate: Date | null) => {
     setDate(newDate);
   };
