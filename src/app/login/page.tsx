@@ -13,8 +13,8 @@ import { useAuthStore } from "@/store/auth";
 const LoginPage = () => {
   const [loginForm,setloginForm] = useState<boolean>(true)
   const [username, setUsername] = useState<string>("");
-  const [password,setPassword] = useState<string>("");
-  const [email,setEmail]= useState<string>("");
+  const [password,setPassword] = useState<string>("Ankush");
+  const [email,setEmail]= useState<string>("ankush@gmail.com");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const navigator = useRouter();
   const {setUser} = useAuthStore();
@@ -119,10 +119,11 @@ const LoginPage = () => {
             </label>
             <input
               onChange={(e)=>{setEmail(e.target.value)}}
+              value={email}
               type="email"
               className="w-full px-4 py-3 rounded-lg bg-gray-800/10 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400/80 focus:border-transparent transition-all duration-200"
               placeholder="Enter your email"
-              // defaultValue="abhay@gmail.com"
+              // defaultValue="ankush@gmail.com"
             />
           </div>
           
@@ -138,9 +139,11 @@ const LoginPage = () => {
             </div>
             <input
               type="password"
+              value={password}
               onChange={(e)=>{setPassword(e.target.value)}}
               className="w-full px-4 py-3 rounded-lg bg-gray-800/10 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400/80 focus:border-transparent transition-all duration-200"
               placeholder="Enter your password"
+              // defaultValue="Ankush"
             />
           </div>
           {
