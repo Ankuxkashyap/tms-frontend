@@ -5,7 +5,6 @@ import Sidebar from "@/components/Sidebar";
 import TaskCard from "@/components/TaskCard";
 import api from "@/lib/api/api";
 import { useAuthStore } from "@/store/auth";
-import { Unplug } from "lucide-react";
 import toast from "react-hot-toast";
 
 type Task = {
