@@ -16,73 +16,66 @@ type Notification = {
 };
 
 export function NotificationsDropdown() {
-  const { notifications, getNotifications, addNotification, getNotifactionCount, showMoreNotifications, updateReadNotification } = useNotificationStore();
+  const {
+    notifications,
+    getNotifications,
+    addNotification,
+    getNotifactionCount,
+    showMoreNotifications,
+    updateReadNotification,
+  } = useNotificationStore();
+
   const [open, setOpen] = useState(false);
   const { getUser } = useAuthStore();
-  const count = getNotifactionCount();
   const user = getUser() as User | null;
-  const notification = useNotificationStore((state) => state.notifications);
-  console.log(notification)
+  const count = getNotifactionCount();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  
-
-  const HandleReadALL = () => {
-    if(!user){
-      return
-    }
-    updateReadNotification();
-    getNotifications();
+  const handleReadAll = async () => {
+    if (!user) return;
+    await updateReadNotification();
+    await getNotifications();
     setOpen(false);
   };
 
-  const HandViewAll = () => {
-    if(!user){
-      return
-    }
-    showMoreNotifications();
-    // setOpen(false);
+  const handleViewAll = async () => {
+    if (!user) return;
+    await showMoreNotifications();
   };
 
-
+  
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   useEffect(() => {
     if (!user?._id) return;
+
+    console.log(" Connecting socket for user:", user._id);
     socket.emit("join", user._id);
 
     getNotifications();
 
-    // const handleNotification = (notif: Notification) => {
-    //   addNotification(notif);
-    //   console.log("New Notification:", notif);
-    // };
-
-    socket.on("notification", (notif: Notification) => {
+    const handleNotification = (notif: Notification) => {
+      console.log(" New real-time notification:", notif);
       addNotification(notif);
-      console.log("New Notification:", notif);
-    });
+      toast.success(notif.message);
+    };
+
+    socket.on("notification", handleNotification);
 
     return () => {
+      console.log(" Leaving socket room:", user._id);
       socket.emit("leave", user._id);
-      socket.off("notification", () => {});
+      socket.off("notification", handleNotification);
     };
-  }, [user?._id, getNotifications]);
-
-   useEffect(() => {
-    if (user) {
-      getNotifications();
-    }
-  }, [user, getNotifications]);
+  }, [user?._id]);
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -99,7 +92,7 @@ export function NotificationsDropdown() {
       </button>
 
       {open && (
-        <div className="absolute right-0 z-50 mt-2 w-80  bg-gray-900 border border-gray-700 rounded-lg shadow-lg overflow-hidden animate-fade-in">
+        <div className="absolute right-0 z-50 mt-2 w-80 bg-gray-900 border border-gray-700 rounded-lg shadow-lg overflow-hidden animate-fade-in">
           <div className="px-4 py-2 font-semibold text-gray-200 border-b border-gray-700">
             Notifications
           </div>
@@ -111,9 +104,15 @@ export function NotificationsDropdown() {
               notifications.map((notification) => (
                 <div
                   key={notification._id}
-                  className={`px-4 py-2 text-sm ${notification.read ? "" : "bg-gray-800"} text-gray-300 hover:bg-gray-700 transition flex justify-between items-center`}
+                  className={`px-4 py-2 text-sm ${
+                    notification.read ? "" : "bg-gray-800"
+                  } text-gray-300 hover:bg-gray-700 transition flex justify-between items-center`}
                 >
-                  <p className={`${notification.read ? "text-gray-300" : "text-stone-300"}`}>
+                  <p
+                    className={`${
+                      notification.read ? "text-gray-300" : "text-stone-300"
+                    }`}
+                  >
                     {notification.message}
                   </p>
                   <span className="text-xs text-gray-500">
@@ -129,13 +128,13 @@ export function NotificationsDropdown() {
 
           <div className="text-center border-t flex justify-between border-gray-700 p-2">
             <button
-              onClick={HandViewAll}
+              onClick={handleViewAll}
               className="text-sm cursor-pointer text-gray-400 hover:text-gray-200"
             >
-              View all notifications
+              View all
             </button>
             <div className="border-r border-gray-400"></div>
-            <button onClick={HandleReadALL}>
+            <button onClick={handleReadAll}>
               <span className="text-sm cursor-pointer text-gray-400 hover:text-gray-200">
                 Mark all as read
               </span>
