@@ -54,9 +54,10 @@ export function NotificationsDropdown() {
   }, []);
 
   useEffect(() => {
-    if (!user?._id) return;
+    // if (!user?._id) return;
 
     console.log("Connecting socket for user:", user._id);
+
     socket.emit("join", user._id);
 
     getNotifications();
@@ -75,6 +76,13 @@ export function NotificationsDropdown() {
       socket.off("notification", handleNotification);
     };
   }, [user?._id, getNotifications]);
+
+  useEffect(() => {
+    if(user){
+      getNotifications();
+      getNotifactionCount();
+    }
+  })
 
   return (
     <div className="relative" ref={dropdownRef}>
