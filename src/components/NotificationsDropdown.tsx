@@ -43,7 +43,6 @@ export function NotificationsDropdown() {
     await showMoreNotifications();
   };
 
-  
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -57,13 +56,13 @@ export function NotificationsDropdown() {
   useEffect(() => {
     if (!user?._id) return;
 
-    console.log(" Connecting socket for user:", user._id);
+    console.log("Connecting socket for user:", user._id);
     socket.emit("join", user._id);
 
     getNotifications();
 
     const handleNotification = (notif: Notification) => {
-      console.log(" New real-time notification:", notif);
+      console.log("New real-time notification:", notif);
       addNotification(notif);
       toast.success(notif.message);
     };
@@ -71,15 +70,11 @@ export function NotificationsDropdown() {
     socket.on("notification", handleNotification);
 
     return () => {
-      console.log(" Leaving socket room:", user._id);
+      console.log("Leaving socket room:", user._id);
       socket.emit("leave", user._id);
       socket.off("notification", handleNotification);
     };
-  }, [user?._id]);
-
-  useEffect(()=>{
-    getNotifications();
-  },[])
+  }, [user?._id, getNotifications]);
 
   return (
     <div className="relative" ref={dropdownRef}>
