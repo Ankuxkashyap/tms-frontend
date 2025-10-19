@@ -30,7 +30,7 @@ export function NotificationsDropdown() {
   const user = getUser() as User | null;
   const count = getNotifactionCount();
   const dropdownRef = useRef<HTMLDivElement>(null);
-
+  console.log(user);
   const handleReadAll = async () => {
     if (!user) return;
     await updateReadNotification();
@@ -54,7 +54,7 @@ export function NotificationsDropdown() {
   }, []);
 
   useEffect(() => {
-    // if (!user?._id) return;
+    if (!user?._id) return;
 
     console.log("Connecting socket for user:", user._id);
 
