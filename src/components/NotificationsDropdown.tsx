@@ -30,7 +30,8 @@ export function NotificationsDropdown() {
   const user = getUser() as User | null;
   const count = getNotifactionCount();
   const dropdownRef = useRef<HTMLDivElement>(null);
-  console.log(user);
+  // console.log(user);
+
   const handleReadAll = async () => {
     if (!user) return;
     await updateReadNotification();
@@ -56,22 +57,22 @@ export function NotificationsDropdown() {
   useEffect(() => {
     if (!user?._id) return;
 
-    console.log("Connecting socket for user:", user._id);
+    // console.log("Connecting socket for user:", user._id);
 
     socket.emit("join", user._id);
 
     getNotifications();
 
     const handleNotification = (notif: Notification) => {
-      console.log("New real-time notification:", notif);
+      // console.log("New real-time notification:", notif);
       addNotification(notif);
-      toast.success(notif.message);
+      // toast.success(notif.message);
     };
 
     socket.on("notification", handleNotification);
 
     return () => {
-      console.log("Leaving socket room:", user._id);
+      // console.log("Leaving socket room:", user._id);
       socket.emit("leave", user._id);
       socket.off("notification", handleNotification);
     };
