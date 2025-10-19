@@ -33,6 +33,7 @@ const LoginPage = () => {
     }
     try{
       const res = await api.post('/user/login',validation.data)
+      console.log(res.data);
       if(res.data.success){
         toast.success(res.data.message);
       }

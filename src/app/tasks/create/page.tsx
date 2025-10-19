@@ -37,7 +37,7 @@ const CreateTask = () => {
       try {
         const res = await api.get("/user/users");
         const data = Array.isArray(res.data) ? res.data : res.data?.users || [];
-        console.log(res.data)
+        // console.log(res.data)
         setUsers(data);
       } catch (err) {
         console.error(err);
