@@ -73,7 +73,7 @@ export function NotificationsDropdown() {
       socket.emit("leave", user._id);
       socket.off("notification", handleNotification);
     };
-  }, [user?._id]);
+  }, [user?._id, getNotifications]);
 
   return (
     <div className="relative" ref={dropdownRef}>

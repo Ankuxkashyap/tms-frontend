@@ -1,6 +1,4 @@
 import api from "@/lib/api/api";
-import { get } from "http";
-import { no } from "zod/v4/locales";
 import {create} from "zustand";
 
 type Notification = {
@@ -31,7 +29,9 @@ const notificationStore = create<NotificationStore>((set, get) => ({
     getNotifications: async () => {
         try {
             const res = await api.get("/notification");
+            console.log(res.data)
             const data = Array.isArray(res.data) ? res.data : res.data?.notifications || [];
+            console.log(data)
             set({ notifications: data });
         } catch (err) {
             console.error(err);
