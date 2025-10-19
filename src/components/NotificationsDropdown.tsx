@@ -21,7 +21,8 @@ export function NotificationsDropdown() {
   const { getUser } = useAuthStore();
   const count = getNotifactionCount();
   const user = getUser() as User | null;
-
+  const notification = useNotificationStore((state) => state.notifications);
+  console.log(notification)
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   
