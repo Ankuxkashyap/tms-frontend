@@ -29,9 +29,9 @@ const notificationStore = create<NotificationStore>((set, get) => ({
     getNotifications: async () => {
         try {
             const res = await api.get("/notification");
-            console.log(res.data)
+            // console.log(res.data)
             const data = Array.isArray(res.data) ? res.data : res.data?.notifications || [];
-            console.log(data)
+            // console.log(data)
             set({ notifications: data });
         } catch (err) {
             console.error(err);
