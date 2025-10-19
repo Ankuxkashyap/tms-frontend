@@ -74,6 +74,12 @@ export function NotificationsDropdown() {
       socket.off("notification", handleNotification);
     };
   }, [user?._id, getNotifications]);
+  
+   useEffect(() => {
+    if (user) {
+      getNotifications();
+    }
+  }, [user, getNotifications]);
 
   return (
     <div className="relative" ref={dropdownRef}>
