@@ -77,6 +77,10 @@ export function NotificationsDropdown() {
     };
   }, [user?._id]);
 
+  useEffect(()=>{
+    getNotifications();
+  },[])
+
   return (
     <div className="relative" ref={dropdownRef}>
       <button
