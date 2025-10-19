@@ -62,19 +62,22 @@ export function NotificationsDropdown() {
 
     getNotifications();
 
-    const handleNotification = (notif: Notification) => {
+    // const handleNotification = (notif: Notification) => {
+    //   addNotification(notif);
+    //   console.log("New Notification:", notif);
+    // };
+
+    socket.on("notification", (notif: Notification) => {
       addNotification(notif);
       console.log("New Notification:", notif);
-    };
-
-    socket.on("notification", handleNotification);
+    });
 
     return () => {
       socket.emit("leave", user._id);
-      socket.off("notification", handleNotification);
+      socket.off("notification", () => {});
     };
   }, [user?._id, getNotifications]);
-  
+
    useEffect(() => {
     if (user) {
       getNotifications();
